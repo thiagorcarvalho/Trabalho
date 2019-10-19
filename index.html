@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora</title>
+    <style type="text/css">
+
+        #calc{
+            top: 50%;
+            width: 50%;
+            background-color: rgb(179, 169, 175);
+            width: 388px;
+            height: 410px;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px;
+
+        }
+        button{
+            width: 90px;
+            height: 60px;
+            margin: 2px;
+            border-radius: 5px;
+            border-style: none;
+            font-size: 40px;
+        }
+        #igual{
+            
+            width: 286px;
+            height: 60px;
+            margin: 2px;
+            border-radius: 5px;
+            border-style: none;
+            font-size: 40px;
+            background-color: rgb(109, 97, 107);
+        }
+        #display{
+            width: 345px;
+            height: 10%;
+            font-size: 40px;
+            overflow: hidden;
+            border-radius: 5px;
+            padding: 20px;
+        }
+        #limpa{
+            background-color:red;
+        }
+        #pot{
+            width: 90px;
+            height: 60px;
+            margin: 2px;
+            border-radius: 5px;
+            border-style: none;
+            font-size: 40px;
+            
+        }
+        #texto{
+            font-size: 40px;
+        }
+    </style>
+    <script type="text/javascript">
+        var displayBuffer = '';
+        var numero = '';
+        var termos = [undefined,undefined,undefined]
+        var resultado;
+
+        function pressNum(num){
+            numero = numero.concat(num.innerHTML);
+            mostrar(num.innerHTML);
+        }
+        function limparmemoria(){
+            numero ='';
+            termos = [undefined,undefined,undefined];
+            resultado = undefined;
+        }
+        function limpardisplay(){
+            displayBuffer = '';
+            var tela = document.getElementById('display');
+            tela.value = displayBuffer;
+        }
+        function limpartudo(){
+            limpardisplay();
+            limparmemoria();
+        }
+        function mostrar(conteudo){
+            displayBuffer = displayBuffer.concat(conteudo);
+            var tela = document.getElementById('display');
+            tela.value = displayBuffer;
+
+        }
+        function operador(op){
+            if(termos[1] == undefined){
+                termos[0] = numero;
+                termos[1] = op.innerHTML;
+                mostrar(op.innerHTML);
+                numero = '';
+            }
+            
+        }
+        function operadorPot(op){
+            if(termos[1] == undefined){
+                termos[0] = numero;
+                termos[1] = op.innerHTML;
+                mostrar('^');
+                numero = '';
+            }
+            
+        }
+        function igual(){
+            if(termos[0] != undefined && termos[1] != undefined && numero != ""){
+                termos[2] = numero; 
+                let esperaResultado;
+                switch(termos[1]){
+                    case '+':
+                    resultado = Number(termos[0]) + Number(termos[2]);
+                    break;
+                    case '-':
+                    resultado = Number(termos[0]) - Number(termos[2]);
+                    break;
+                    case '*':
+                    resultado = Number(termos[0]) * Number(termos[2]);
+                    break;
+                    case '/':
+                    resultado = Number(termos[0]) / Number(termos[2]);
+                    break;
+                    case 'Pot':
+                    resultado = Number(termos[0]) ** Number(termos[2]);
+                    break;
+                } 
+                esperaResultado = resultado;
+                limpardisplay();
+                mostrar(resultado);
+                limparmemoria();
+                numero = esperaResultado.toString();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1 id="texto">Calculadora</h1>
+    <div id="calc">
+        <textarea id="display" disabled rows="1"></textarea>
+        <div>
+            <button onclick="pressNum(this)">1</button>
+            <button onclick="pressNum(this)">2</button>
+            <button onclick="pressNum(this)">3</button>
+            <button onclick="operador(this)">+</button>
+        </div>
+        <div>
+            <button onclick="pressNum(this)">4</button>
+            <button onclick="pressNum(this)">5</button>
+            <button onclick="pressNum(this)">6</button>
+            <button onclick="operador(this)">-</button>
+        </div>
+        <div>
+            <button onclick="pressNum(this)">7</button>
+            <button onclick="pressNum(this)">8</button>
+            <button onclick="pressNum(this)">9</button>
+            <button onclick="operador(this)">*</button>
+        </div>
+        <div>
+            <button onclick="pressNum(this)">0</button>
+            <button onclick="pressNum(this)">.</button>
+            <button id="limpa" onclick="limpartudo()">C</button>
+            <button onclick="operador(this)">/</button>
+            <button id="igual" onclick="igual()">=</button>
+            <button id="pot" onclick="operadorPot(this)">Pot</button>
+            
+        </div>
+        
+    </div>
+</body>
+</html>
